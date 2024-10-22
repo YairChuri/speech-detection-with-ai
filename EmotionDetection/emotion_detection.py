@@ -15,15 +15,15 @@ def emotion_detector(text_to_analyse):
         result = response.json()
         strongest_emotion = ""
         strongest_emotion_score = 0
-        for emotion, score in result["emotionPredictions"][0]["emotion"].items():
+        emotions = result["emotionPredictions"][0]["emotion"]
+        for emotion, score in emotions.items():
             if score > strongest_emotion_score:
                 strongest_emotion = emotion
                 strongest_emotion_score = score
-        print("Strongest Emotion: " + strongest_emotion)
-        formatted_json = json.dumps(result, indent=4)
-        print(formatted_json)
+        #print("Strongest Emotion: " + strongest_emotion)
+        #formatted_json = json.dumps(result, indent=4)
+        emotions["dominant_emotion"] = strongest_emotion
+        return emotions
     else:
-        print(f'Error: {response.status_code}, {response.text}')
+        return (f'Error: {response.status_code}, {response.text}')
 
-text = "I love this new technology."
-emotion_detector(text)
